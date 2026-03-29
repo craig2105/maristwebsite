@@ -1,25 +1,32 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 export function useScrollReveal() {
-  const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
-  const [node, setNode] = useState<HTMLDivElement | null>(null);
-
-  // Callback ref to detect when element mounts
-  const callbackRef = (el: HTMLDivElement | null) => {
-    (ref as React.MutableRefObject<HTMLDivElement | null>).current = el;
-    setNode(el);
-  };
+  const nodeRef = useRef<HTMLDivElement | null>(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
-    if (!node) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setVisible(true); observer.unobserve(node); } },
+    observerRef.current = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observerRef.current?.disconnect();
+        }
+      },
       { threshold: 0.15 }
     );
-    observer.observe(node);
-    return () => observer.disconnect();
-  }, [node]);
+    if (nodeRef.current) {
+      observerRef.current.observe(nodeRef.current);
+    }
+    return () => observerRef.current?.disconnect();
+  }, []);
 
-  return { ref: callbackRef, visible };
+  const ref = useCallback((el: HTMLDivElement | null) => {
+    nodeRef.current = el;
+    if (el && observerRef.current) {
+      observerRef.current.observe(el);
+    }
+  }, []);
+
+  return { ref, visible };
 }
