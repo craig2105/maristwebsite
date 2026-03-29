@@ -13,6 +13,8 @@ export default function UniformsManager() {
   const [editing, setEditing] = useState<any>(null);
   const [form, setForm] = useState({ name: '', price: '', quantity: '1' });
   const [visible, setVisible] = useState(true);
+  const [importOpen, setImportOpen] = useState(false);
+  const docx = useDocxImport();
 
   const load = useCallback(() => {
     (supabase.from('uniforms' as any).select('*').order('created_at', { ascending: true }) as any)
