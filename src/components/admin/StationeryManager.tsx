@@ -62,9 +62,40 @@ export default function StationeryManager() {
 
   const total = items.reduce((sum, i) => sum + (i.price * i.quantity), 0);
 
+  const handleImportConfirm = async () => {
+    if (!docx.preview) return;
+    const inserts = docx.preview.rows
+      .filter(r => r[0]?.trim() && !isNaN(parseFloat(r[1])))
+      .map(r => ({ name: r[0].trim(), price: parseFloat(r[1]), quantity: 1 }));
+    if (inserts.length === 0) { toast.error('No valid items found'); return; }
+    await (supabase.from('stationery' as any).insert(inserts) as any);
+    toast.success(`${inserts.length} stationery items imported`);
+    setImportOpen(false);
+    docx.reset();
+    load();
+  };
+
   return (
     <div>
-      <h2 className="font-display text-xl font-bold text-foreground mb-4">Manage Stationery</h2>
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="font-display text-xl font-bold text-foreground">Manage Stationery</h2>
+        <Button variant="outline" size="sm" onClick={() => setImportOpen(true)} className="gap-1">
+          <Upload className="w-4 h-4" /> Import DOCX
+        </Button>
+      </div>
+
+      <DocxImportDialog
+        open={importOpen}
+        onOpenChange={setImportOpen}
+        title="Import Stationery from DOCX"
+        columns={['Item Name', 'Price']}
+        parsing={docx.parsing}
+        preview={docx.preview}
+        error={docx.error}
+        onFileSelect={f => docx.parseDocx(f, 2)}
+        onConfirm={handleImportConfirm}
+        onReset={docx.reset}
+      />
 
       <div className="bg-card border rounded-lg p-4 mb-6 flex items-center justify-between">
         <div>
