@@ -46,7 +46,7 @@ export default function TestimonialsSection() {
   const showCards = testimonials.length <= 3;
 
   return (
-    <section ref={ref as unknown as React.RefObject<HTMLDivElement>} className={`py-16 md:py-20 bg-primary/5 ${visible ? 'animate-reveal' : 'opacity-0'}`}>
+    <section ref={ref} className={`py-16 md:py-20 bg-primary/5 ${visible ? 'animate-reveal' : 'opacity-0'}`}>
       <div className="container">
         <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground text-center mb-10">
           What People Say
