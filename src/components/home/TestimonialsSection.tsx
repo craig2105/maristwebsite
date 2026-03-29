@@ -41,7 +41,7 @@ export default function TestimonialsSection() {
     return () => clearInterval(timer);
   }, [testimonials.length, current, goTo]);
 
-  if (testimonials.length === 0) return <section ref={ref} className="hidden" />;
+  if (testimonials.length === 0) return null;
 
   const showCards = testimonials.length <= 3;
 
