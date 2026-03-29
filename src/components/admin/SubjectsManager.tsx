@@ -22,6 +22,9 @@ export default function SubjectsManager() {
   const [newName, setNewName] = useState('');
   const [newCategory, setNewCategory] = useState('');
   const [newStream, setNewStream] = useState('sciences');
+  const [importOpen, setImportOpen] = useState(false);
+  const [importLevel, setImportLevel] = useState<'o-level' | 'a-level'>('o-level');
+  const docx = useDocxImport();
 
   const load = useCallback(async () => {
     const { data } = await supabase
