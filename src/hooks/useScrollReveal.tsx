@@ -1,24 +1,31 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 export function useScrollReveal() {
-  const ref = useRef<HTMLDivElement | null>(null);
   const [visible, setVisible] = useState(false);
+  const nodeRef = useRef<HTMLDivElement | null>(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
-    const node = ref.current;
-    if (!node) return;
-
-    const observer = new IntersectionObserver(
+    observerRef.current = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setVisible(true);
-          observer.unobserve(node);
+          observerRef.current?.disconnect();
         }
       },
       { threshold: 0.15 }
     );
-    observer.observe(node);
-    return () => observer.disconnect();
+    if (nodeRef.current) {
+      observerRef.current.observe(nodeRef.current);
+    }
+    return () => observerRef.current?.disconnect();
+  }, []);
+
+  const ref = useCallback((el: HTMLDivElement | null) => {
+    nodeRef.current = el;
+    if (el && observerRef.current) {
+      observerRef.current.observe(el);
+    }
   }, []);
 
   return { ref, visible };
