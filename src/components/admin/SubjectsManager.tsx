@@ -76,9 +76,59 @@ export default function SubjectsManager() {
 
   const existingCategories = [...new Set(subjects.filter(s => s.level === 'o-level').map(s => s.category).filter(Boolean))] as string[];
 
+  const handleImportConfirm = async () => {
+    if (!docx.preview) return;
+    const maxOrder = subjects.filter(s => s.level === importLevel).reduce((m, s) => Math.max(m, s.sort_order), 0);
+    const inserts = docx.preview.rows
+      .filter(r => r[0]?.trim())
+      .map((r, i) => ({
+        name: r[0].trim(),
+        level: importLevel,
+        sort_order: maxOrder + i + 1,
+        ...(importLevel === 'o-level' ? { category: 'Imported' } : { stream: 'sciences' }),
+      }));
+    if (inserts.length === 0) { toast.error('No valid subjects found'); return; }
+    const { error } = await supabase.from('subjects').insert(inserts);
+    if (error) { toast.error('Import failed'); return; }
+    toast.success(`${inserts.length} subjects imported`);
+    setImportOpen(false);
+    docx.reset();
+    load();
+  };
+
   return (
     <div>
-      <h2 className="font-display text-xl font-bold text-foreground mb-6">Manage Subjects</h2>
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="font-display text-xl font-bold text-foreground">Manage Subjects</h2>
+        <Button variant="outline" size="sm" onClick={() => setImportOpen(true)} className="gap-1">
+          <Upload className="w-4 h-4" /> Import DOCX
+        </Button>
+      </div>
+
+      <DocxImportDialog
+        open={importOpen}
+        onOpenChange={setImportOpen}
+        title="Import Subjects from DOCX"
+        columns={['Subject Name']}
+        parsing={docx.parsing}
+        preview={docx.preview}
+        error={docx.error}
+        onFileSelect={f => docx.parseDocx(f, 1)}
+        onConfirm={handleImportConfirm}
+        onReset={docx.reset}
+      >
+        <div className="mb-2">
+          <label className="text-sm font-medium text-foreground mb-1.5 block">Import as</label>
+          <select
+            value={importLevel}
+            onChange={e => setImportLevel(e.target.value as any)}
+            className="w-full px-3 py-2 border rounded-md text-sm bg-background"
+          >
+            <option value="o-level">O-Level</option>
+            <option value="a-level">A-Level</option>
+          </select>
+        </div>
+      </DocxImportDialog>
 
       {/* Level tabs */}
       <div className="flex gap-2 mb-6">
