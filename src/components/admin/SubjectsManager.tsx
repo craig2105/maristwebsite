@@ -76,16 +76,37 @@ export default function SubjectsManager() {
 
   const existingCategories = [...new Set(subjects.filter(s => s.level === 'o-level').map(s => s.category).filter(Boolean))] as string[];
 
+  const VALID_COMBINATIONS: Record<string, string> = {
+    'art': 'arts',
+    'commercial': 'commercials',
+    'science': 'sciences',
+  };
+
   const handleImportConfirm = async () => {
     if (!docx.preview) return;
     const maxOrder = subjects.filter(s => s.level === importLevel).reduce((m, s) => Math.max(m, s.sort_order), 0);
+
+    if (importLevel === 'a-level') {
+      // Validate combination values
+      const invalidRow = docx.preview.rows.find(r => {
+        const combo = (r[1] || '').trim().toLowerCase();
+        return !VALID_COMBINATIONS[combo];
+      });
+      if (invalidRow) {
+        toast.error('Invalid combination value. Must be Art, Commercial, or Science.');
+        return;
+      }
+    }
+
     const inserts = docx.preview.rows
       .filter(r => r[0]?.trim())
       .map((r, i) => ({
         name: r[0].trim(),
         level: importLevel,
         sort_order: maxOrder + i + 1,
-        ...(importLevel === 'o-level' ? { category: 'Imported' } : { stream: 'sciences' }),
+        ...(importLevel === 'o-level'
+          ? { category: 'Imported' }
+          : { stream: VALID_COMBINATIONS[(r[1] || '').trim().toLowerCase()] }),
       }));
     if (inserts.length === 0) { toast.error('No valid subjects found'); return; }
     const { error } = await supabase.from('subjects').insert(inserts);
@@ -109,24 +130,31 @@ export default function SubjectsManager() {
         open={importOpen}
         onOpenChange={setImportOpen}
         title="Import Subjects from DOCX"
-        columns={['Subject Name']}
+        columns={importLevel === 'a-level' ? ['Subject Name', 'Combination'] : ['Subject Name']}
         parsing={docx.parsing}
         preview={docx.preview}
         error={docx.error}
-        onFileSelect={f => docx.parseDocx(f, 1)}
+        onFileSelect={f => docx.parseDocx(f, importLevel === 'a-level' ? 2 : 1)}
         onConfirm={handleImportConfirm}
         onReset={docx.reset}
       >
-        <div className="mb-2">
-          <label className="text-sm font-medium text-foreground mb-1.5 block">Import as</label>
-          <select
-            value={importLevel}
-            onChange={e => setImportLevel(e.target.value as any)}
-            className="w-full px-3 py-2 border rounded-md text-sm bg-background"
-          >
-            <option value="o-level">O-Level</option>
-            <option value="a-level">A-Level</option>
-          </select>
+        <div className="mb-2 space-y-2">
+          <div>
+            <label className="text-sm font-medium text-foreground mb-1.5 block">Import as</label>
+            <select
+              value={importLevel}
+              onChange={e => { setImportLevel(e.target.value as any); docx.reset(); }}
+              className="w-full px-3 py-2 border rounded-md text-sm bg-background"
+            >
+              <option value="o-level">O-Level</option>
+              <option value="a-level">A-Level</option>
+            </select>
+          </div>
+          <p className="text-xs text-muted-foreground">
+            {importLevel === 'a-level'
+              ? 'A-Level DOCX must contain 2 columns: Subject Name and Combination (Art, Commercial, or Science)'
+              : 'O-Level DOCX must contain 1 column: Subject Name'}
+          </p>
         </div>
       </DocxImportDialog>
 
