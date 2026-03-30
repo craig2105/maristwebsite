@@ -138,16 +138,23 @@ export default function SubjectsManager() {
         onConfirm={handleImportConfirm}
         onReset={docx.reset}
       >
-        <div className="mb-2">
-          <label className="text-sm font-medium text-foreground mb-1.5 block">Import as</label>
-          <select
-            value={importLevel}
-            onChange={e => setImportLevel(e.target.value as any)}
-            className="w-full px-3 py-2 border rounded-md text-sm bg-background"
-          >
-            <option value="o-level">O-Level</option>
-            <option value="a-level">A-Level</option>
-          </select>
+        <div className="mb-2 space-y-2">
+          <div>
+            <label className="text-sm font-medium text-foreground mb-1.5 block">Import as</label>
+            <select
+              value={importLevel}
+              onChange={e => { setImportLevel(e.target.value as any); docx.reset(); }}
+              className="w-full px-3 py-2 border rounded-md text-sm bg-background"
+            >
+              <option value="o-level">O-Level</option>
+              <option value="a-level">A-Level</option>
+            </select>
+          </div>
+          <p className="text-xs text-muted-foreground">
+            {importLevel === 'a-level'
+              ? 'A-Level DOCX must contain 2 columns: Subject Name and Combination (Art, Commercial, or Science)'
+              : 'O-Level DOCX must contain 1 column: Subject Name'}
+          </p>
         </div>
       </DocxImportDialog>
 
