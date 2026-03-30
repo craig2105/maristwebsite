@@ -130,11 +130,11 @@ export default function SubjectsManager() {
         open={importOpen}
         onOpenChange={setImportOpen}
         title="Import Subjects from DOCX"
-        columns={['Subject Name']}
+        columns={importLevel === 'a-level' ? ['Subject Name', 'Combination'] : ['Subject Name']}
         parsing={docx.parsing}
         preview={docx.preview}
         error={docx.error}
-        onFileSelect={f => docx.parseDocx(f, 1)}
+        onFileSelect={f => docx.parseDocx(f, importLevel === 'a-level' ? 2 : 1)}
         onConfirm={handleImportConfirm}
         onReset={docx.reset}
       >
