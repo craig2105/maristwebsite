@@ -76,16 +76,37 @@ export default function SubjectsManager() {
 
   const existingCategories = [...new Set(subjects.filter(s => s.level === 'o-level').map(s => s.category).filter(Boolean))] as string[];
 
+  const VALID_COMBINATIONS: Record<string, string> = {
+    'art': 'arts',
+    'commercial': 'commercials',
+    'science': 'sciences',
+  };
+
   const handleImportConfirm = async () => {
     if (!docx.preview) return;
     const maxOrder = subjects.filter(s => s.level === importLevel).reduce((m, s) => Math.max(m, s.sort_order), 0);
+
+    if (importLevel === 'a-level') {
+      // Validate combination values
+      const invalidRow = docx.preview.rows.find(r => {
+        const combo = (r[1] || '').trim().toLowerCase();
+        return !VALID_COMBINATIONS[combo];
+      });
+      if (invalidRow) {
+        toast.error('Invalid combination value. Must be Art, Commercial, or Science.');
+        return;
+      }
+    }
+
     const inserts = docx.preview.rows
       .filter(r => r[0]?.trim())
       .map((r, i) => ({
         name: r[0].trim(),
         level: importLevel,
         sort_order: maxOrder + i + 1,
-        ...(importLevel === 'o-level' ? { category: 'Imported' } : { stream: 'sciences' }),
+        ...(importLevel === 'o-level'
+          ? { category: 'Imported' }
+          : { stream: VALID_COMBINATIONS[(r[1] || '').trim().toLowerCase()] }),
       }));
     if (inserts.length === 0) { toast.error('No valid subjects found'); return; }
     const { error } = await supabase.from('subjects').insert(inserts);
