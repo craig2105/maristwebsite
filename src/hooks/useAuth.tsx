@@ -80,15 +80,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     void initializeAuth();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (!mountedRef.current) return;
 
       setSession(session ?? null);
       setUser(session?.user ?? null);
 
       if (session?.user) {
-        // Don't await — fire and forget to avoid blocking signInWithPassword
-        void checkAdmin(session.user.id);
+        // Only re-check admin on actual sign-in, not on token refresh
+        // This prevents resetting form state when switching browser tabs
+        if (event === 'SIGNED_IN' || event === 'INITIAL_SESSION') {
+          void checkAdmin(session.user.id);
+        }
       } else {
         setIsAdmin(false);
       }
