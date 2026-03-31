@@ -21,8 +21,9 @@ import UniformsManager from '@/components/admin/UniformsManager';
 import StationeryManager from '@/components/admin/StationeryManager';
 import TestimonialsManager from '@/components/admin/TestimonialsManager';
 import SiteContentManager from '@/components/admin/SiteContentManager';
+import HomepageStatsManager from '@/components/admin/HomepageStatsManager';
 
-type Tab = 'visitors' | 'posts' | 'gallery' | 'files' | 'events' | 'clubs' | 'innovations' | 'sports' | 'messages' | 'fees' | 'uniforms' | 'stationery' | 'academics' | 'admissions' | 'subjects' | 'testimonials' | 'site_content' | 'settings';
+type Tab = 'visitors' | 'posts' | 'gallery' | 'files' | 'events' | 'clubs' | 'innovations' | 'sports' | 'messages' | 'fees' | 'uniforms' | 'stationery' | 'academics' | 'admissions' | 'subjects' | 'testimonials' | 'site_content' | 'homepage_stats' | 'settings';
 
 // Shared hook for image cropping before upload
 function useImageCrop() {
@@ -81,6 +82,7 @@ export default function AdminDashboard() {
     { key: 'testimonials', label: 'Testimonials', icon: Quote },
     { key: 'messages', label: 'Messages', icon: MessageSquare },
     { key: 'site_content', label: 'Site Content', icon: Type },
+    { key: 'homepage_stats', label: 'Homepage Stats', icon: BarChart3 },
     { key: 'settings', label: 'Settings', icon: Settings },
   ];
 
@@ -144,6 +146,7 @@ export default function AdminDashboard() {
         <div className={tab === 'testimonials' ? '' : 'hidden'}><TestimonialsManager /></div>
         <div className={tab === 'messages' ? '' : 'hidden'}><MessagesManager /></div>
         <div className={tab === 'site_content' ? '' : 'hidden'}><SiteContentManager /></div>
+        <div className={tab === 'homepage_stats' ? '' : 'hidden'}><HomepageStatsManager /></div>
         <div className={tab === 'settings' ? '' : 'hidden'}><SettingsManager /></div>
       </main>
     </div>
