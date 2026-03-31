@@ -562,6 +562,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      increment_gallery_likes: { Args: { row_id: string }; Returns: undefined }
     }
     Enums: {
       app_role: "admin" | "user"
