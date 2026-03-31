@@ -21,8 +21,9 @@ import UniformsManager from '@/components/admin/UniformsManager';
 import StationeryManager from '@/components/admin/StationeryManager';
 import TestimonialsManager from '@/components/admin/TestimonialsManager';
 import SiteContentManager from '@/components/admin/SiteContentManager';
+import HomepageStatsManager from '@/components/admin/HomepageStatsManager';
 
-type Tab = 'visitors' | 'posts' | 'gallery' | 'files' | 'events' | 'clubs' | 'innovations' | 'sports' | 'messages' | 'fees' | 'uniforms' | 'stationery' | 'academics' | 'admissions' | 'subjects' | 'testimonials' | 'site_content' | 'settings';
+type Tab = 'visitors' | 'posts' | 'gallery' | 'files' | 'events' | 'clubs' | 'innovations' | 'sports' | 'messages' | 'fees' | 'uniforms' | 'stationery' | 'academics' | 'admissions' | 'subjects' | 'testimonials' | 'site_content' | 'homepage_stats' | 'settings';
 
 // Shared hook for image cropping before upload
 function useImageCrop() {
