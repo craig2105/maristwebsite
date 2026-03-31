@@ -182,6 +182,7 @@ export type Database = {
           category: string | null
           id: string
           image_url: string
+          likes: number
           uploaded_at: string
         }
         Insert: {
@@ -189,6 +190,7 @@ export type Database = {
           category?: string | null
           id?: string
           image_url: string
+          likes?: number
           uploaded_at?: string
         }
         Update: {
@@ -196,6 +198,7 @@ export type Database = {
           category?: string | null
           id?: string
           image_url?: string
+          likes?: number
           uploaded_at?: string
         }
         Relationships: []
@@ -559,6 +562,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      increment_gallery_likes: { Args: { row_id: string }; Returns: undefined }
     }
     Enums: {
       app_role: "admin" | "user"
