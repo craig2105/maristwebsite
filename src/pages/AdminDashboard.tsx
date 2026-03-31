@@ -82,6 +82,7 @@ export default function AdminDashboard() {
     { key: 'testimonials', label: 'Testimonials', icon: Quote },
     { key: 'messages', label: 'Messages', icon: MessageSquare },
     { key: 'site_content', label: 'Site Content', icon: Type },
+    { key: 'homepage_stats', label: 'Homepage Stats', icon: BarChart3 },
     { key: 'settings', label: 'Settings', icon: Settings },
   ];
 
