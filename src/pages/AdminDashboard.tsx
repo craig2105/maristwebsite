@@ -146,6 +146,7 @@ export default function AdminDashboard() {
         <div className={tab === 'testimonials' ? '' : 'hidden'}><TestimonialsManager /></div>
         <div className={tab === 'messages' ? '' : 'hidden'}><MessagesManager /></div>
         <div className={tab === 'site_content' ? '' : 'hidden'}><SiteContentManager /></div>
+        <div className={tab === 'homepage_stats' ? '' : 'hidden'}><HomepageStatsManager /></div>
         <div className={tab === 'settings' ? '' : 'hidden'}><SettingsManager /></div>
       </main>
     </div>
