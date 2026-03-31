@@ -200,6 +200,36 @@ export type Database = {
         }
         Relationships: []
       }
+      homepage_stats: {
+        Row: {
+          created_at: string
+          icon: string | null
+          id: string
+          is_visible: boolean
+          order_index: number
+          title: string
+          value: string
+        }
+        Insert: {
+          created_at?: string
+          icon?: string | null
+          id?: string
+          is_visible?: boolean
+          order_index?: number
+          title: string
+          value: string
+        }
+        Update: {
+          created_at?: string
+          icon?: string | null
+          id?: string
+          is_visible?: boolean
+          order_index?: number
+          title?: string
+          value?: string
+        }
+        Relationships: []
+      }
       innovation_images: {
         Row: {
           created_at: string
