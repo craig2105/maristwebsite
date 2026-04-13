@@ -5,7 +5,7 @@ export default function Maintenance() {
     <div className="min-h-screen bg-background flex items-center justify-center p-6">
       <div className="text-center max-w-md space-y-8">
         <div className="flex flex-col items-center gap-3">
-          <img src={cyrisLogo} alt="Cyris Logo" className="w-24 h-24 animate-pulse" />
+          <img src={cyrisLogo} alt="Cyris Logo" className="h-20 w-auto object-contain animate-pulse" />
           <span className="font-display text-lg font-bold text-primary tracking-wide">Cyris</span>
         </div>
         <div className="space-y-3">

@@ -42,7 +42,7 @@ export default function Footer() {
           <span>© {new Date().getFullYear()} Marist Brothers High School Dete. All rights reserved.</span>
           <div className="flex items-center gap-2">
             <span>Powered by</span>
-            <img src={cyrisLogo} alt="Cyris" className="w-5 h-5" />
+            <img src={cyrisLogo} alt="Cyris" className="h-5 w-auto object-contain" />
             <span className="font-semibold">Cyris</span>
           </div>
         </div>
