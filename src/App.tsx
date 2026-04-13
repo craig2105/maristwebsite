@@ -23,6 +23,7 @@ import Fees from "./pages/Fees";
 import Login from "./pages/Login";
 import AdminDashboard from "./pages/AdminDashboard";
 import Maintenance from "./pages/Maintenance";
+import SchoolPortal from "./pages/SchoolPortal";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();

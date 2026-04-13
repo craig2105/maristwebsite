@@ -14,6 +14,7 @@ const links = [
   { to: '/innovation-hub', label: 'Innovation Hub' },
   { to: '/sports', label: 'Sports' },
   { to: '/fees', label: 'Fees' },
+  { to: '/school-portal', label: 'School Portal' },
   { to: '/contact', label: 'Contact' },
 ];
 
