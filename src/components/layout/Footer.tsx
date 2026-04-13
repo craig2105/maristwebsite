@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Mail, Phone, MapPin } from 'lucide-react';
 import schoolLogo from '@/assets/school-logo.png';
+import cyrisLogo from '@/assets/cyris-logo.png';
 
 export default function Footer() {
   return (
@@ -34,9 +35,16 @@ export default function Footer() {
           </div>
         </div>
       </div>
+
+      {/* Cyris branding bar */}
       <div className="border-t border-primary-foreground/20">
-        <div className="container py-4 text-center text-xs opacity-60">
-          © {new Date().getFullYear()} Marist Brothers High School Dete. All rights reserved.
+        <div className="container py-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs opacity-60">
+          <span>© {new Date().getFullYear()} Marist Brothers High School Dete. All rights reserved.</span>
+          <div className="flex items-center gap-2">
+            <span>Powered by</span>
+            <img src={cyrisLogo} alt="Cyris" className="w-5 h-5" />
+            <span className="font-semibold">Cyris</span>
+          </div>
         </div>
       </div>
     </footer>
