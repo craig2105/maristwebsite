@@ -1,12 +1,12 @@
-import maintenanceLogo from '@/assets/maintenance-logo.png';
+import cyrisLogo from '@/assets/cyris-logo.png';
 
 export default function Maintenance() {
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-6">
       <div className="text-center max-w-md space-y-8">
         <div className="flex flex-col items-center gap-3">
-          <img src={maintenanceLogo} alt="Axisware Logo" className="w-24 h-24 animate-pulse" />
-          <span className="font-display text-lg font-bold text-primary tracking-wide">Axisware</span>
+          <img src={cyrisLogo} alt="Cyris Logo" className="w-24 h-24 animate-pulse" />
+          <span className="font-display text-lg font-bold text-primary tracking-wide">Cyris</span>
         </div>
         <div className="space-y-3">
           <h1 className="font-display text-3xl font-bold text-foreground">Under Maintenance</h1>
