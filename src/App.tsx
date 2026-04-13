@@ -23,6 +23,7 @@ import Fees from "./pages/Fees";
 import Login from "./pages/Login";
 import AdminDashboard from "./pages/AdminDashboard";
 import Maintenance from "./pages/Maintenance";
+import SchoolPortal from "./pages/SchoolPortal";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -86,6 +87,7 @@ const App = () => (
                 <Route path="/sports/:id" element={<SportDetail />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/fees" element={<Fees />} />
+                <Route path="/school-portal" element={<SchoolPortal />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/admin" element={<AdminDashboard />} />
                 <Route path="*" element={<NotFound />} />
