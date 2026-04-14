@@ -265,6 +265,44 @@ export type Database = {
           },
         ]
       }
+      innovation_social_links: {
+        Row: {
+          created_at: string
+          display_order: number
+          icon_name: string
+          id: string
+          innovation_id: string
+          platform_name: string
+          platform_url: string
+        }
+        Insert: {
+          created_at?: string
+          display_order?: number
+          icon_name?: string
+          id?: string
+          innovation_id: string
+          platform_name: string
+          platform_url?: string
+        }
+        Update: {
+          created_at?: string
+          display_order?: number
+          icon_name?: string
+          id?: string
+          innovation_id?: string
+          platform_name?: string
+          platform_url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "innovation_social_links_innovation_id_fkey"
+            columns: ["innovation_id"]
+            isOneToOne: false
+            referencedRelation: "innovations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       innovations: {
         Row: {
           category: string | null

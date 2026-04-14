@@ -579,6 +579,40 @@ function InnovationsManager() {
     const { data } = await supabase.from('innovation_images').select('*').eq('innovation_id', item.id).order('sort_order');
     setExistingImages(data || []);
     setGalleryFiles([]);
+    await loadSocialLinks(item.id);
+  };
+
+  const [socialLinks, setSocialLinks] = useState<any[]>([]);
+
+  const loadSocialLinks = async (innovationId: string) => {
+    const { data } = await supabase.from('innovation_social_links').select('*').eq('innovation_id', innovationId).order('display_order');
+    setSocialLinks(data || []);
+  };
+
+  const addSocialLink = () => {
+    setSocialLinks(prev => [...prev, { id: `new-${Date.now()}`, platform_name: '', platform_url: '', icon_name: 'globe', display_order: prev.length, _isNew: true }]);
+  };
+
+  const updateSocialLink = (index: number, field: string, value: string) => {
+    setSocialLinks(prev => prev.map((l, i) => i === index ? { ...l, [field]: value } : l));
+  };
+
+  const removeSocialLink = (index: number) => {
+    setSocialLinks(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const saveSocialLinks = async (innovationId: string) => {
+    await supabase.from('innovation_social_links').delete().eq('innovation_id', innovationId);
+    const toInsert = socialLinks.filter(l => l.platform_name && l.platform_url).map((l, i) => ({
+      innovation_id: innovationId,
+      platform_name: l.platform_name,
+      platform_url: l.platform_url,
+      icon_name: l.icon_name || 'globe',
+      display_order: i,
+    }));
+    if (toInsert.length > 0) {
+      await supabase.from('innovation_social_links').insert(toInsert);
+    }
   };
 
   const save = async () => {
@@ -614,10 +648,15 @@ function InnovationsManager() {
       setUploadingGallery(false);
     }
 
+    if (innovationId) {
+      await saveSocialLinks(innovationId);
+    }
+
     setForm({ name: '', description: '', category: 'general', image_url: '' });
     setEditing(null);
     setGalleryFiles([]);
     setExistingImages([]);
+    setSocialLinks([]);
     load();
   };
 
@@ -692,11 +731,37 @@ function InnovationsManager() {
           )}
         </div>
 
+        {/* Social Media Links per Innovation */}
+        <div>
+          <label className="text-sm font-medium text-foreground mb-1.5 block">Social Media Links</label>
+          <div className="space-y-2">
+            {socialLinks.map((link, i) => (
+              <div key={link.id} className="flex gap-2 items-center">
+                <Input placeholder="Platform (e.g. YouTube)" value={link.platform_name} onChange={e => updateSocialLink(i, 'platform_name', e.target.value)} className="flex-1" />
+                <Input placeholder="https://..." value={link.platform_url} onChange={e => updateSocialLink(i, 'platform_url', e.target.value)} className="flex-[2]" />
+                <select value={link.icon_name} onChange={e => updateSocialLink(i, 'icon_name', e.target.value)} className="h-10 rounded-md border border-input bg-background px-2 text-sm">
+                  <option value="globe">Globe</option>
+                  <option value="instagram">Instagram</option>
+                  <option value="youtube">YouTube</option>
+                  <option value="facebook">Facebook</option>
+                  <option value="linkedin">LinkedIn</option>
+                  <option value="twitter">X / Twitter</option>
+                  <option value="at-sign">Threads</option>
+                </select>
+                <button onClick={() => removeSocialLink(i)} className="p-1.5 rounded hover:bg-destructive/10 text-destructive shrink-0"><Trash2 className="w-4 h-4" /></button>
+              </div>
+            ))}
+          </div>
+          <button onClick={addSocialLink} className="mt-2 flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <Plus className="w-4 h-4" /> Add social link
+          </button>
+        </div>
+
         <div className="flex gap-2">
           <Button onClick={save} size="sm" disabled={uploadingGallery}>
             <Plus className="w-4 h-4 mr-1" />{uploadingGallery ? 'Uploading...' : editing ? 'Update' : 'Create'}
           </Button>
-          {editing && <Button variant="outline" size="sm" onClick={() => { setEditing(null); setForm({ name: '', description: '', category: 'general', image_url: '' }); setGalleryFiles([]); setExistingImages([]); }}>Cancel</Button>}
+          {editing && <Button variant="outline" size="sm" onClick={() => { setEditing(null); setForm({ name: '', description: '', category: 'general', image_url: '' }); setGalleryFiles([]); setExistingImages([]); setSocialLinks([]); }}>Cancel</Button>}
         </div>
       </div>
       <div className="space-y-3">
