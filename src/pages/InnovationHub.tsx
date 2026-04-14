@@ -6,6 +6,7 @@ import PageHeader from '@/components/shared/PageHeader';
 import Spinner from '@/components/shared/Spinner';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { Lightbulb } from 'lucide-react';
+import SocialMediaButtons from '@/components/shared/SocialMediaButtons';
 
 function S({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   const { ref, visible } = useScrollReveal();
@@ -36,6 +37,11 @@ export default function InnovationHub() {
   return (
     <Layout>
       <PageHeader title="Innovation Hub" subtitle="Discover student projects, innovations, and talents" bannerKey="innovation_hub" gradient="innovation" />
+      <section className="py-6">
+        <div className="container">
+          <SocialMediaButtons />
+        </div>
+      </section>
       <section className="py-16">
         <div className="container">
           {loading ? <Spinner /> : (

@@ -5,6 +5,7 @@ import Layout from '@/components/layout/Layout';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { Lightbulb, ArrowLeft, Tag } from 'lucide-react';
 import Spinner from '@/components/shared/Spinner';
+import SocialMediaButtons from '@/components/shared/SocialMediaButtons';
 
 function S({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   const { ref, visible } = useScrollReveal();
@@ -119,6 +120,11 @@ export default function InnovationDetail() {
               </div>
             </S>
           )}
+
+          {/* Social Media */}
+          <S>
+            <SocialMediaButtons />
+          </S>
         </div>
       </section>
 
