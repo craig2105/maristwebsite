@@ -581,6 +581,39 @@ function InnovationsManager() {
     setGalleryFiles([]);
   };
 
+  const [socialLinks, setSocialLinks] = useState<any[]>([]);
+
+  const loadSocialLinks = async (innovationId: string) => {
+    const { data } = await supabase.from('innovation_social_links').select('*').eq('innovation_id', innovationId).order('display_order');
+    setSocialLinks(data || []);
+  };
+
+  const addSocialLink = () => {
+    setSocialLinks(prev => [...prev, { id: `new-${Date.now()}`, platform_name: '', platform_url: '', icon_name: 'globe', display_order: prev.length, _isNew: true }]);
+  };
+
+  const updateSocialLink = (index: number, field: string, value: string) => {
+    setSocialLinks(prev => prev.map((l, i) => i === index ? { ...l, [field]: value } : l));
+  };
+
+  const removeSocialLink = (index: number) => {
+    setSocialLinks(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const saveSocialLinks = async (innovationId: string) => {
+    await supabase.from('innovation_social_links').delete().eq('innovation_id', innovationId);
+    const toInsert = socialLinks.filter(l => l.platform_name && l.platform_url).map((l, i) => ({
+      innovation_id: innovationId,
+      platform_name: l.platform_name,
+      platform_url: l.platform_url,
+      icon_name: l.icon_name || 'globe',
+      display_order: i,
+    }));
+    if (toInsert.length > 0) {
+      await supabase.from('innovation_social_links').insert(toInsert);
+    }
+  };
+
   const save = async () => {
     if (!form.name) { toast.error('Project name is required'); return; }
 
@@ -614,10 +647,15 @@ function InnovationsManager() {
       setUploadingGallery(false);
     }
 
+    if (innovationId) {
+      await saveSocialLinks(innovationId);
+    }
+
     setForm({ name: '', description: '', category: 'general', image_url: '' });
     setEditing(null);
     setGalleryFiles([]);
     setExistingImages([]);
+    setSocialLinks([]);
     load();
   };
 
