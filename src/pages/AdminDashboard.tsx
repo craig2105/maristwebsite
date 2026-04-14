@@ -731,11 +731,37 @@ function InnovationsManager() {
           )}
         </div>
 
+        {/* Social Media Links per Innovation */}
+        <div>
+          <label className="text-sm font-medium text-foreground mb-1.5 block">Social Media Links</label>
+          <div className="space-y-2">
+            {socialLinks.map((link, i) => (
+              <div key={link.id} className="flex gap-2 items-center">
+                <Input placeholder="Platform (e.g. YouTube)" value={link.platform_name} onChange={e => updateSocialLink(i, 'platform_name', e.target.value)} className="flex-1" />
+                <Input placeholder="https://..." value={link.platform_url} onChange={e => updateSocialLink(i, 'platform_url', e.target.value)} className="flex-[2]" />
+                <select value={link.icon_name} onChange={e => updateSocialLink(i, 'icon_name', e.target.value)} className="h-10 rounded-md border border-input bg-background px-2 text-sm">
+                  <option value="globe">Globe</option>
+                  <option value="instagram">Instagram</option>
+                  <option value="youtube">YouTube</option>
+                  <option value="facebook">Facebook</option>
+                  <option value="linkedin">LinkedIn</option>
+                  <option value="twitter">X / Twitter</option>
+                  <option value="at-sign">Threads</option>
+                </select>
+                <button onClick={() => removeSocialLink(i)} className="p-1.5 rounded hover:bg-destructive/10 text-destructive shrink-0"><Trash2 className="w-4 h-4" /></button>
+              </div>
+            ))}
+          </div>
+          <button onClick={addSocialLink} className="mt-2 flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <Plus className="w-4 h-4" /> Add social link
+          </button>
+        </div>
+
         <div className="flex gap-2">
           <Button onClick={save} size="sm" disabled={uploadingGallery}>
             <Plus className="w-4 h-4 mr-1" />{uploadingGallery ? 'Uploading...' : editing ? 'Update' : 'Create'}
           </Button>
-          {editing && <Button variant="outline" size="sm" onClick={() => { setEditing(null); setForm({ name: '', description: '', category: 'general', image_url: '' }); setGalleryFiles([]); setExistingImages([]); }}>Cancel</Button>}
+          {editing && <Button variant="outline" size="sm" onClick={() => { setEditing(null); setForm({ name: '', description: '', category: 'general', image_url: '' }); setGalleryFiles([]); setExistingImages([]); setSocialLinks([]); }}>Cancel</Button>}
         </div>
       </div>
       <div className="space-y-3">
