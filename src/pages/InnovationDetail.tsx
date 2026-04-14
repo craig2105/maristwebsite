@@ -3,9 +3,20 @@ import { useParams, Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import Layout from '@/components/layout/Layout';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
-import { Lightbulb, ArrowLeft, Tag } from 'lucide-react';
+import { Lightbulb, ArrowLeft, Tag, Instagram, Youtube, Facebook, Linkedin, Twitter, AtSign, Globe } from 'lucide-react';
 import Spinner from '@/components/shared/Spinner';
-import SocialMediaButtons from '@/components/shared/SocialMediaButtons';
+
+const PLATFORM_ICONS: Record<string, any> = {
+  instagram: Instagram, youtube: Youtube, facebook: Facebook, linkedin: Linkedin, twitter: Twitter, 'at-sign': AtSign,
+};
+const PLATFORM_COLORS: Record<string, string> = {
+  instagram: 'hover:bg-pink-500/10 hover:text-pink-500 hover:border-pink-500/30',
+  youtube: 'hover:bg-red-500/10 hover:text-red-500 hover:border-red-500/30',
+  facebook: 'hover:bg-blue-600/10 hover:text-blue-600 hover:border-blue-600/30',
+  linkedin: 'hover:bg-blue-500/10 hover:text-blue-500 hover:border-blue-500/30',
+  twitter: 'hover:bg-foreground/10 hover:text-foreground hover:border-foreground/30',
+  'at-sign': 'hover:bg-purple-500/10 hover:text-purple-500 hover:border-purple-500/30',
+};
 
 function S({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   const { ref, visible } = useScrollReveal();
@@ -16,6 +27,7 @@ export default function InnovationDetail() {
   const { id } = useParams<{ id: string }>();
   const [innovation, setInnovation] = useState<any>(null);
   const [images, setImages] = useState<any[]>([]);
+  const [socialLinks, setSocialLinks] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedImg, setSelectedImg] = useState<string | null>(null);
 
@@ -24,9 +36,11 @@ export default function InnovationDetail() {
     Promise.all([
       supabase.from('innovations').select('*').eq('id', id).maybeSingle(),
       supabase.from('innovation_images').select('*').eq('innovation_id', id).order('sort_order'),
-    ]).then(([{ data: inn }, { data: imgs }]) => {
+      supabase.from('innovation_social_links').select('*').eq('innovation_id', id).order('display_order'),
+    ]).then(([{ data: inn }, { data: imgs }, { data: links }]) => {
       setInnovation(inn);
       setImages(imgs || []);
+      setSocialLinks((links || []).filter(l => l.platform_url));
       setLoading(false);
     });
 
@@ -121,10 +135,24 @@ export default function InnovationDetail() {
             </S>
           )}
 
-          {/* Social Media */}
-          <S>
-            <SocialMediaButtons />
-          </S>
+          {/* Social Media Links */}
+          {socialLinks.length > 0 && (
+            <S>
+              <div className="flex flex-wrap justify-center gap-3">
+                {socialLinks.map(link => {
+                  const Icon = PLATFORM_ICONS[link.icon_name] || Globe;
+                  const colorClass = PLATFORM_COLORS[link.icon_name] || 'hover:bg-primary/10 hover:text-primary hover:border-primary/30';
+                  return (
+                    <a key={link.id} href={link.platform_url} target="_blank" rel="noopener noreferrer"
+                      className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-full border border-border bg-card text-muted-foreground text-sm font-medium transition-all duration-200 ${colorClass}`}>
+                      <Icon className="w-4 h-4" />
+                      {link.platform_name}
+                    </a>
+                  );
+                })}
+              </div>
+            </S>
+          )}
         </div>
       </section>
 
