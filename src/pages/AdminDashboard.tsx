@@ -579,6 +579,7 @@ function InnovationsManager() {
     const { data } = await supabase.from('innovation_images').select('*').eq('innovation_id', item.id).order('sort_order');
     setExistingImages(data || []);
     setGalleryFiles([]);
+    await loadSocialLinks(item.id);
   };
 
   const [socialLinks, setSocialLinks] = useState<any[]>([]);
