@@ -385,6 +385,36 @@ export type Database = {
         }
         Relationships: []
       }
+      social_media_links: {
+        Row: {
+          created_at: string
+          display_order: number
+          icon_name: string
+          id: string
+          is_active: boolean
+          platform_name: string
+          platform_url: string
+        }
+        Insert: {
+          created_at?: string
+          display_order?: number
+          icon_name?: string
+          id?: string
+          is_active?: boolean
+          platform_name: string
+          platform_url?: string
+        }
+        Update: {
+          created_at?: string
+          display_order?: number
+          icon_name?: string
+          id?: string
+          is_active?: boolean
+          platform_name?: string
+          platform_url?: string
+        }
+        Relationships: []
+      }
       sports: {
         Row: {
           created_at: string
