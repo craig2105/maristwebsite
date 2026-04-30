@@ -2,53 +2,66 @@ import { useState } from 'react';
 import Layout from '@/components/layout/Layout';
 import schoolLogo from '@/assets/school-logo.png';
 import scholasticLogo from '@/assets/scholastic-logo.png';
-import { GraduationCap, Users, Briefcase } from 'lucide-react';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from '@/components/ui/dialog';
+import { GraduationCap, Users, Briefcase, ArrowLeft, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
+const SCHOLASTIC_URL = 'https://scholasticservices.online/#/login';
+
 const tiles = [
-  {
-    key: 'student',
-    label: 'Student Portal',
-    icon: GraduationCap,
-    message:
-      'Dear Student, you are about to be redirected to the Scholastic Services page where you can log in and access your academic information.',
-  },
-  {
-    key: 'parent',
-    label: 'Parent Portal',
-    icon: Users,
-    message:
-      'Dear Parent, you are about to be redirected to the Scholastic Services page where you can log in and view your child\'s academic information.',
-  },
-  {
-    key: 'staff',
-    label: 'Staff Portal',
-    icon: Briefcase,
-    message:
-      'Dear Staff Member, you are about to be redirected to the Scholastic Services page where you can log in and access relevant school data.',
-  },
+  { key: 'student', label: 'Student Portal', icon: GraduationCap },
+  { key: 'parent', label: 'Parent Portal', icon: Users },
+  { key: 'staff', label: 'Staff Portal', icon: Briefcase },
 ];
 
 export default function SchoolPortal() {
-  const [selected, setSelected] = useState<(typeof tiles)[number] | null>(null);
+  const [active, setActive] = useState<(typeof tiles)[number] | null>(null);
 
-  const handleContinue = () => {
-    window.open('https://scholasticservices.online/#/login', '_blank');
-    setSelected(null);
-  };
+  if (active) {
+    const Icon = active.icon;
+    return (
+      <Layout>
+        <div className="container py-6 animate-fade-in">
+          <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
+            <div className="flex items-center gap-3">
+              <Button variant="ghost" size="sm" onClick={() => setActive(null)}>
+                <ArrowLeft className="w-4 h-4 mr-1" /> Back
+              </Button>
+              <div className="flex items-center gap-2">
+                <Icon className="w-5 h-5 text-primary" />
+                <h1 className="font-display text-xl font-semibold text-primary">{active.label}</h1>
+              </div>
+            </div>
+            <a
+              href={SCHOLASTIC_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors"
+            >
+              Open in new tab <ExternalLink className="w-3.5 h-3.5" />
+            </a>
+          </div>
+
+          <div className="rounded-xl border bg-card shadow-sm overflow-hidden">
+            <iframe
+              src={SCHOLASTIC_URL}
+              title={`${active.label} - Scholastic Services Login`}
+              className="w-full h-[80vh] border-0 bg-white"
+              referrerPolicy="no-referrer"
+              sandbox="allow-forms allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
+            />
+          </div>
+          <p className="text-xs text-muted-foreground mt-3 text-center">
+            Login is provided by Scholastic Services. If the panel above appears blank, please use "Open in new tab".
+          </p>
+        </div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
       <div className="min-h-[70vh] flex flex-col items-center justify-center py-16 px-4 animate-fade-in">
-        {/* Branding header */}
-        <div className="flex items-center gap-4 mb-10 animate-fade-in">
+        <div className="flex items-center gap-4 mb-10">
           <img src={schoolLogo} alt="Marist Brothers" className="h-16 w-16 object-contain" />
           <span className="text-2xl text-muted-foreground font-light select-none">×</span>
           <img src={scholasticLogo} alt="Scholastic Services" className="h-16 w-16 object-contain" />
@@ -58,17 +71,16 @@ export default function SchoolPortal() {
           School Portal
         </h1>
         <p className="text-muted-foreground mb-12 text-center max-w-md">
-          Select your portal to access Scholastic Services
+          Select your portal to log in to Scholastic Services
         </p>
 
-        {/* Tiles */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 w-full max-w-3xl">
           {tiles.map((tile) => {
             const Icon = tile.icon;
             return (
               <button
                 key={tile.key}
-                onClick={() => setSelected(tile)}
+                onClick={() => setActive(tile)}
                 className="group flex flex-col items-center gap-4 p-8 rounded-xl border bg-card shadow-sm hover:shadow-lg hover:scale-[1.04] hover:border-primary/40 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary/50"
               >
                 <div className="w-16 h-16 rounded-full bg-primary/10 group-hover:bg-primary/20 flex items-center justify-center transition-colors duration-300">
@@ -82,21 +94,6 @@ export default function SchoolPortal() {
           })}
         </div>
       </div>
-
-      {/* Redirect modal */}
-      <Dialog open={!!selected} onOpenChange={(open) => !open && setSelected(null)}>
-        <DialogContent className="max-w-md">
-          <DialogHeader>
-            <DialogTitle className="text-primary">{selected?.label}</DialogTitle>
-            <DialogDescription className="pt-2 leading-relaxed">
-              {selected?.message}
-            </DialogDescription>
-          </DialogHeader>
-          <div className="flex justify-end pt-2">
-            <Button onClick={handleContinue}>Continue</Button>
-          </div>
-        </DialogContent>
-      </Dialog>
     </Layout>
   );
 }
