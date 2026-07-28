@@ -23,7 +23,7 @@ export default function About() {
           <S>
             <h2 className="font-display text-2xl font-bold text-foreground mb-4">Our Mission</h2>
             <p className="text-muted-foreground leading-relaxed">
-              To educate and form young people in the Marist way — making Jesus Christ known and loved — through a quality education that emphasises academic excellence, moral integrity, and service to others.
+             Education is the priority of the school. This means developing the young people in our charge to become whole persons. Our aim is to develop them mentally, physically, spiritually and morally. We thrive to form persons of honesty, diligence and a clear sense of right and wrong with the ability to stand up for what is morally right.
             </p>
           </S>
           <S>
