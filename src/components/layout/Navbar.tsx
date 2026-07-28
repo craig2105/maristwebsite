@@ -70,7 +70,7 @@ export default function Navbar() {
 
       {/* Mobile drawer */}
       <div
-        className={`lg:hidden fixed inset-0 top-0 z-40 transition-opacity duration-200 ${
+        className={`lg:hidden fixed inset-0 top-0 z-40 overflow-hidden transition-opacity duration-200 ${
           open ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
       >
