@@ -21,12 +21,12 @@ export default function PageHeader({ title, subtitle, bannerKey, gradient }: Pag
 
   if (bannerUrl) {
     return (
-      <section ref={ref} className="relative h-48 md:h-64 flex items-center overflow-hidden">
+      <section ref={ref} className="relative h-40 sm:h-48 md:h-64 flex items-center overflow-hidden">
         <img src={bannerUrl} alt="" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-black/50" />
         <div className={`relative container text-center z-10 ${visible ? 'animate-reveal' : 'opacity-0'}`}>
-          <h1 className="font-display text-3xl md:text-4xl font-bold text-white leading-tight">{title}</h1>
-          {subtitle && <p className="mt-3 text-white/80 max-w-2xl mx-auto">{subtitle}</p>}
+          <h1 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-white leading-tight">{title}</h1>
+          {subtitle && <p className="mt-2 md:mt-3 text-sm sm:text-base text-white/80 max-w-2xl mx-auto">{subtitle}</p>}
         </div>
       </section>
     );
@@ -37,11 +37,12 @@ export default function PageHeader({ title, subtitle, bannerKey, gradient }: Pag
     : 'bg-primary';
 
   return (
-    <section ref={ref} className={`${gradientClass} py-16 md:py-20`}>
+    <section ref={ref} className={`${gradientClass} py-10 sm:py-14 md:py-20`}>
       <div className={`container text-center ${visible ? 'animate-reveal' : 'opacity-0'}`}>
-        <h1 className="font-display text-3xl md:text-4xl font-bold text-white leading-tight">{title}</h1>
-        {subtitle && <p className="mt-3 text-white/80 max-w-2xl mx-auto">{subtitle}</p>}
+        <h1 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-white leading-tight">{title}</h1>
+        {subtitle && <p className="mt-2 md:mt-3 text-sm sm:text-base text-white/80 max-w-2xl mx-auto">{subtitle}</p>}
       </div>
     </section>
   );
+
 }
