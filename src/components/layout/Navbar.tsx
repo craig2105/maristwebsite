@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import schoolLogo from '@/assets/school-logo.png';
@@ -22,14 +22,23 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const { pathname } = useLocation();
 
+  // Close on route change
+  useEffect(() => { setOpen(false); }, [pathname]);
+
+  // Lock body scroll while the mobile drawer is open
+  useEffect(() => {
+    document.body.style.overflow = open ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [open]);
+
   return (
     <header className="sticky top-0 z-50 bg-card/95 backdrop-blur-sm border-b shadow-sm">
-      <div className="container flex items-center justify-between h-16">
-        <Link to="/" className="flex items-center gap-3 shrink-0">
-          <img src={schoolLogo} alt="Marist Brothers Logo" className="h-10 w-10 object-contain" />
-          <div className="hidden sm:block leading-tight">
-            <span className="font-display text-sm font-bold text-primary block">Marist Brothers</span>
-            <span className="text-xs text-muted-foreground">High School Dete</span>
+      <div className="container flex items-center justify-between h-14 sm:h-16">
+        <Link to="/" className="flex items-center gap-2.5 shrink-0 min-w-0">
+          <img src={schoolLogo} alt="Marist Brothers Logo" className="h-9 w-9 sm:h-10 sm:w-10 object-contain shrink-0" />
+          <div className="leading-tight min-w-0">
+            <span className="font-display text-[13px] sm:text-sm font-bold text-primary block truncate">Marist Brothers</span>
+            <span className="text-[11px] sm:text-xs text-muted-foreground block truncate">High School Dete</span>
           </div>
         </Link>
 
@@ -51,33 +60,63 @@ export default function Navbar() {
 
         <button
           onClick={() => setOpen(!open)}
-          className="lg:hidden p-2 rounded-md hover:bg-muted transition-colors"
-          aria-label="Toggle menu"
+          className="lg:hidden -mr-2 h-11 w-11 inline-flex items-center justify-center rounded-md hover:bg-muted active:bg-muted transition-colors"
+          aria-label={open ? 'Close menu' : 'Open menu'}
+          aria-expanded={open}
         >
-          {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
       </div>
 
-      {open && (
-        <div className="lg:hidden border-t bg-card">
-          <nav className="container py-4 flex flex-col gap-1">
+      {/* Mobile drawer */}
+      <div
+        className={`lg:hidden fixed inset-0 top-0 z-40 transition-opacity duration-200 ${
+          open ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
+      >
+        <div className="absolute inset-0 bg-foreground/40 backdrop-blur-[2px]" onClick={() => setOpen(false)} />
+        <nav
+          className={`absolute right-0 top-0 h-full w-[82%] max-w-xs bg-card shadow-2xl flex flex-col transition-transform duration-300 ease-out ${
+            open ? 'translate-x-0' : 'translate-x-full'
+          }`}
+        >
+          <div className="flex items-center justify-between h-14 px-5 border-b shrink-0">
+            <span className="font-display text-sm font-bold text-primary">Menu</span>
+            <button
+              onClick={() => setOpen(false)}
+              className="-mr-2 h-11 w-11 inline-flex items-center justify-center rounded-md hover:bg-muted"
+              aria-label="Close menu"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+          <div className="flex-1 overflow-y-auto overscroll-contain py-3 px-3 flex flex-col gap-0.5">
             {links.map(l => (
               <Link
                 key={l.to}
                 to={l.to}
                 onClick={() => setOpen(false)}
-                className={`px-4 py-2.5 rounded-md text-sm font-medium transition-colors ${
+                className={`px-4 min-h-[48px] flex items-center rounded-lg text-[15px] font-medium transition-colors ${
                   pathname === l.to
                     ? 'bg-primary text-primary-foreground'
-                    : 'text-foreground hover:bg-muted'
+                    : 'text-foreground hover:bg-muted active:bg-muted'
                 }`}
               >
                 {l.label}
               </Link>
             ))}
-          </nav>
-        </div>
-      )}
+          </div>
+          <div className="p-4 border-t shrink-0">
+            <Link
+              to="/admissions"
+              onClick={() => setOpen(false)}
+              className="flex items-center justify-center min-h-[48px] rounded-lg bg-secondary text-secondary-foreground font-bold text-sm"
+            >
+              Apply Now
+            </Link>
+          </div>
+        </nav>
+      </div>
     </header>
   );
 }
