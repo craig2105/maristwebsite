@@ -95,7 +95,9 @@ const App = () => (
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </MaintenanceGuard>
+            <QuickEditor />
           </BrowserRouter>
+
         </MaintenanceProvider>
       </AuthProvider>
     </TooltipProvider>
