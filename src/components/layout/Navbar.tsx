@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import schoolLogo from '@/assets/school-logo.png';
+
 
 const links = [
   { to: '/', label: 'Home' },
