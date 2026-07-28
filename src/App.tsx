@@ -25,6 +25,8 @@ import AdminDashboard from "./pages/AdminDashboard";
 import Maintenance from "./pages/Maintenance";
 import SchoolPortal from "./pages/SchoolPortal";
 import NotFound from "./pages/NotFound";
+import QuickEditor from "./components/admin/QuickEditor";
+
 
 const queryClient = new QueryClient();
 
