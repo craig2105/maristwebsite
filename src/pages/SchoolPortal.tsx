@@ -45,11 +45,12 @@ export default function SchoolPortal() {
             <iframe
               src={SCHOLASTIC_URL}
               title={`${active.label} - Scholastic Services Login`}
-              className="w-full h-[80vh] border-0 bg-white"
+              className="w-full h-[70vh] sm:h-[80vh] min-h-[480px] border-0 bg-white"
               referrerPolicy="no-referrer"
               sandbox="allow-forms allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
             />
           </div>
+
           <p className="text-xs text-muted-foreground mt-3 text-center">
             Login is provided by Scholastic Services. If the panel above appears blank, please use "Open in new tab".
           </p>
@@ -60,33 +61,33 @@ export default function SchoolPortal() {
 
   return (
     <Layout>
-      <div className="min-h-[70vh] flex flex-col items-center justify-center py-16 px-4 animate-fade-in">
-        <div className="flex items-center gap-4 mb-10">
-          <img src={schoolLogo} alt="Marist Brothers" className="h-16 w-16 object-contain" />
-          <span className="text-2xl text-muted-foreground font-light select-none">×</span>
-          <img src={scholasticLogo} alt="Scholastic Services" className="h-16 w-16 object-contain" />
+      <div className="min-h-[70vh] flex flex-col items-center justify-center py-10 sm:py-16 px-4 animate-fade-in">
+        <div className="flex items-center gap-3 sm:gap-4 mb-6 sm:mb-10">
+          <img src={schoolLogo} alt="Marist Brothers" className="h-12 w-12 sm:h-16 sm:w-16 object-contain" />
+          <span className="text-xl sm:text-2xl text-muted-foreground font-light select-none">×</span>
+          <img src={scholasticLogo} alt="Scholastic Services" className="h-12 w-12 sm:h-16 sm:w-16 object-contain" />
         </div>
 
-        <h1 className="font-display text-3xl md:text-4xl font-bold text-primary mb-2 text-center">
+        <h1 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-2 text-center">
           School Portal
         </h1>
-        <p className="text-muted-foreground mb-12 text-center max-w-md">
+        <p className="text-sm sm:text-base text-muted-foreground mb-8 sm:mb-12 text-center max-w-md">
           Select your portal to log in to Scholastic Services
         </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 w-full max-w-3xl">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 w-full max-w-3xl">
           {tiles.map((tile) => {
             const Icon = tile.icon;
             return (
               <button
                 key={tile.key}
                 onClick={() => setActive(tile)}
-                className="group flex flex-col items-center gap-4 p-8 rounded-xl border bg-card shadow-sm hover:shadow-lg hover:scale-[1.04] hover:border-primary/40 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary/50"
+                className="group flex flex-row sm:flex-col items-center gap-4 p-5 sm:p-8 rounded-xl border bg-card shadow-sm hover:shadow-lg sm:hover:scale-[1.04] active:scale-[0.98] hover:border-primary/40 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary/50"
               >
-                <div className="w-16 h-16 rounded-full bg-primary/10 group-hover:bg-primary/20 flex items-center justify-center transition-colors duration-300">
-                  <Icon className="w-8 h-8 text-primary" />
+                <div className="w-12 h-12 sm:w-16 sm:h-16 shrink-0 rounded-full bg-primary/10 group-hover:bg-primary/20 flex items-center justify-center transition-colors duration-300">
+                  <Icon className="w-6 h-6 sm:w-8 sm:h-8 text-primary" />
                 </div>
-                <span className="font-display text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
+                <span className="font-display text-base sm:text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
                   {tile.label}
                 </span>
               </button>
@@ -94,6 +95,7 @@ export default function SchoolPortal() {
           })}
         </div>
       </div>
+
     </Layout>
   );
 }
