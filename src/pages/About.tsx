@@ -30,7 +30,6 @@ export default function About() {
             <div className="grid md:grid-cols-3 gap-8">
               {[
                 { icon: BookOpen, title: 'Academic Excellence', desc: 'Rigorous curriculum preparing students for O-Level and A-Level examinations.' },
-      { icon: BookOpen, title: 'Academic Excellence', desc: 'Rigorous curriculum preparing students for O-Level and A-Level examinations.' },
                 { icon: Heart, title: 'Faith Formation', desc: 'Grounded in Catholic values and the Marist charism of simplicity and humility.' },
                 { icon: Award, title: 'Character Building', desc: 'Developing responsible citizens through sports, clubs, and community service.' },
               ].map((v, i) => (
