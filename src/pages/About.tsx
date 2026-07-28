@@ -20,6 +20,12 @@ export default function About() {
               Marist Brothers High School Dete is a Catholic institution rooted in the Marist tradition of St. Marcellin Champagnat. We are dedicated to providing holistic education that nurtures the spiritual, academic, and social development of every student. Located in the scenic Dete area of Hwange District, our school has been a beacon of learning and character formation for decades.
             </p>
           </S>
+           <S>
+            <h2 className="font-display text-2xl font-bold text-foreground mb-4">Our Vision</h2>
+            <p className="text-muted-foreground leading-relaxed">
+             To be a leading institution that seeks to develop and direct spiritual , moral , intellectual and other talents in young people with an ultimate goal of laying a foundation for –reliance and a desire for spiritual growth , personal , community and nation development.
+            </p>
+          </S>
           <S>
             <h2 className="font-display text-2xl font-bold text-foreground mb-4">Our Mission</h2>
             <p className="text-muted-foreground leading-relaxed">
