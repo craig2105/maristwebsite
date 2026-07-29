@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import Layout from '@/components/layout/Layout';
 import PageHeader from '@/components/shared/PageHeader';
-import Spinner from '@/components/shared/Spinner';
+import { CardGridSkeleton } from '@/components/shared/Skeletons';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 
 function S({ children, className = '' }: { children: React.ReactNode; className?: string }) {
@@ -58,7 +58,7 @@ export default function News() {
               ))}
             </div>
           </S>
-          {loading ? <Spinner /> : posts.length === 0 ? (
+          {loading ? <CardGridSkeleton count={6} /> : posts.length === 0 ? (
             <p className="text-muted-foreground text-center py-12">No news articles found.</p>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">

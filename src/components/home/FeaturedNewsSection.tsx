@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Clock } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import Spinner from '@/components/shared/Spinner';
+import { FeaturedNewsSkeleton } from '@/components/shared/Skeletons';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 
 export default function FeaturedNewsSection() {
@@ -22,7 +22,7 @@ export default function FeaturedNewsSection() {
     return () => { supabase.removeChannel(channel); };
   }, []);
 
-  if (loading) return <div className="py-20"><Spinner /></div>;
+  if (loading) return <section className="py-20 md:py-28 bg-muted/50"><div className="container"><FeaturedNewsSkeleton /></div></section>;
   if (posts.length === 0) return null;
 
   const featured = posts[0];
