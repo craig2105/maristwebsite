@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import Layout from '@/components/layout/Layout';
 import PageHeader from '@/components/shared/PageHeader';
-import Spinner from '@/components/shared/Spinner';
+import { GalleryGridSkeleton } from '@/components/shared/Skeletons';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import GalleryCard from '@/components/gallery/GalleryCard';
 import GalleryLightbox from '@/components/gallery/GalleryLightbox';
@@ -89,7 +89,7 @@ export default function Gallery() {
               ))}
             </div>
           </S>
-          {loading ? <Spinner /> : images.length === 0 ? (
+          {loading ? <GalleryGridSkeleton count={8} /> : images.length === 0 ? (
             <p className="text-muted-foreground text-center py-12">No images in the gallery yet.</p>
           ) : (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">

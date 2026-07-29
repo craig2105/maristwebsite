@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import Layout from '@/components/layout/Layout';
 import PageHeader from '@/components/shared/PageHeader';
-import Spinner from '@/components/shared/Spinner';
+import { CardGridSkeleton } from '@/components/shared/Skeletons';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { Users } from 'lucide-react';
 
@@ -37,7 +37,7 @@ export default function Clubs() {
       <PageHeader title="Clubs & Societies" subtitle="Explore your interests and develop new skills" bannerKey="clubs" />
       <section className="py-16">
         <div className="container">
-          {loading ? <Spinner /> : clubs.length === 0 ? (
+          {loading ? <CardGridSkeleton count={6} /> : clubs.length === 0 ? (
             <p className="text-muted-foreground text-center py-12">No clubs have been added yet.</p>
           ) : (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">

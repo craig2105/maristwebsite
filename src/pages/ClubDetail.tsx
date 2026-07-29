@@ -4,7 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import Layout from '@/components/layout/Layout';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { Users, ArrowLeft, Calendar } from 'lucide-react';
-import Spinner from '@/components/shared/Spinner';
+import { DetailSkeleton } from '@/components/shared/Skeletons';
 
 function S({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   const { ref, visible } = useScrollReveal();
@@ -28,7 +28,7 @@ export default function ClubDetail() {
     return () => { supabase.removeChannel(channel); };
   }, [id]);
 
-  if (loading) return <Layout><Spinner /></Layout>;
+  if (loading) return <Layout><DetailSkeleton /></Layout>;
   if (!club) return (
     <Layout>
       <div className="py-20 text-center">

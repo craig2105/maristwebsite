@@ -4,7 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import Layout from '@/components/layout/Layout';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { Lightbulb, ArrowLeft, Tag, Instagram, Youtube, Facebook, Linkedin, Twitter, AtSign, Globe } from 'lucide-react';
-import Spinner from '@/components/shared/Spinner';
+import { DetailSkeleton } from '@/components/shared/Skeletons';
 
 const PLATFORM_ICONS: Record<string, any> = {
   instagram: Instagram, youtube: Youtube, facebook: Facebook, linkedin: Linkedin, twitter: Twitter, 'at-sign': AtSign,
@@ -55,7 +55,7 @@ export default function InnovationDetail() {
     return () => { supabase.removeChannel(channel); };
   }, [id]);
 
-  if (loading) return <Layout><Spinner /></Layout>;
+  if (loading) return <Layout><DetailSkeleton /></Layout>;
   if (!innovation) return (
     <Layout>
       <div className="py-20 text-center">
