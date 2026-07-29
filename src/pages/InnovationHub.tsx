@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import Layout from '@/components/layout/Layout';
 import PageHeader from '@/components/shared/PageHeader';
-import Spinner from '@/components/shared/Spinner';
+import { CardGridSkeleton } from '@/components/shared/Skeletons';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { Lightbulb } from 'lucide-react';
 
@@ -39,7 +39,7 @@ export default function InnovationHub() {
       <PageHeader title="Innovation Hub" subtitle="Discover student projects, innovations, and talents" bannerKey="innovation_hub" gradient="innovation" />
       <section className="py-16">
         <div className="container">
-          {loading ? <Spinner /> : (
+          {loading ? <CardGridSkeleton count={6} /> : (
             <>
               {categories.length > 1 && (
                 <div className="flex flex-wrap gap-2 mb-8">

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import Layout from '@/components/layout/Layout';
 import PageHeader from '@/components/shared/PageHeader';
-import Spinner from '@/components/shared/Spinner';
+import { CardGridSkeleton } from '@/components/shared/Skeletons';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { useSiteContent } from '@/hooks/useSiteContent';
 import { FileText, Download, Shirt, BookOpen } from 'lucide-react';
@@ -98,7 +98,7 @@ export default function Fees() {
             </S>
           )}
 
-          {loading ? <Spinner /> : (
+          {loading ? <CardGridSkeleton count={6} /> : (
             <>
               {/* Tabs */}
               {visibleTabs.length > 1 && (
